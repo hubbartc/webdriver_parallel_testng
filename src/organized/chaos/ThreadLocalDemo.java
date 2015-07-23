@@ -36,7 +36,7 @@ public class ThreadLocalDemo {
 			}
         }
 		
-        LocalDriverManager.setWebDriver(driver);
+        DriverManager.setWebDriver(driver);
 	}
 	
 	@Test
@@ -83,7 +83,7 @@ public class ThreadLocalDemo {
 	
 	@AfterMethod
 	public void afterMethod() {
-		WebDriver driver = LocalDriverManager.getDriver();
+		WebDriver driver = DriverManager.getDriver();
         if (driver != null) {
         	tPrint("Killing webDriver instance...");
             driver.quit();
@@ -93,14 +93,14 @@ public class ThreadLocalDemo {
 
 	
 	private void invokeBrowser(String url) {
-		tPrint("Hashcode of webDriver instance = " + LocalDriverManager.getDriver().hashCode());
+		tPrint("Hashcode of webDriver instance = " + DriverManager.getDriver().hashCode());
 		tPrint("Loading url: " + url);
-		LocalDriverManager.getDriver().get(url);
+		DriverManager.getDriver().get(url);
 		sleep(getRandomInt(SLEEP_MIN, SLEEP_MAX));
 	}
 	
 	private String getTitle() {
-		return LocalDriverManager.getDriver().getTitle();
+		return DriverManager.getDriver().getTitle();
 	}
 
 	private static int getRandomInt(int low, int high) {

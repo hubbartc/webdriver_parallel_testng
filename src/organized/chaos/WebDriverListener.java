@@ -25,14 +25,14 @@ public class WebDriverListener implements IInvokedMethodListener {
 				tPrint("Issue getting remoteWebDriver: " + e.getMessage());
 				e.printStackTrace();
 			}
-            LocalDriverManager.setWebDriver(driver);
+            DriverManager.setWebDriver(driver);
         }
     }
  
     @Override
     public void afterInvocation(IInvokedMethod method, ITestResult testResult) {
         if (method.isTestMethod()) {
-            WebDriver driver = LocalDriverManager.getDriver();
+            WebDriver driver = DriverManager.getDriver();
             if (driver != null) {
             	tPrint("Killing webDriver instance...");
                 driver.quit();
