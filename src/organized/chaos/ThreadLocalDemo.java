@@ -6,6 +6,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import static organized.chaos.PrintUtil.tPrint;
+import static organized.chaos.DriverManager.getDriver;
 
 import java.net.MalformedURLException;
 import java.util.Random;
@@ -83,7 +84,7 @@ public class ThreadLocalDemo {
 	
 	@AfterMethod
 	public void afterMethod() {
-		WebDriver driver = DriverManager.getDriver();
+		WebDriver driver = getDriver();
         if (driver != null) {
         	tPrint("Killing webDriver instance...");
             driver.quit();
@@ -93,14 +94,15 @@ public class ThreadLocalDemo {
 
 	
 	private void invokeBrowser(String url) {
-		tPrint("Hashcode of webDriver instance = " + DriverManager.getDriver().hashCode());
+		tPrint("Hashcode of webDriver instance = " + getDriver().hashCode());
 		tPrint("Loading url: " + url);
-		DriverManager.getDriver().get(url);
+//		DriverManager.getDriver().get(url);
+		getDriver().get(url);
 		sleep(getRandomInt(SLEEP_MIN, SLEEP_MAX));
 	}
 	
 	private String getTitle() {
-		return DriverManager.getDriver().getTitle();
+		return getDriver().getTitle();
 	}
 
 	private static int getRandomInt(int low, int high) {
