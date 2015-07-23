@@ -3,6 +3,7 @@ package organized.chaos;
 import org.openqa.selenium.WebDriver;
  
 public class LocalDriverManager {
+	
     private static ThreadLocal<WebDriver> webDriver = new ThreadLocal<WebDriver>();
  
     public static WebDriver getDriver() {

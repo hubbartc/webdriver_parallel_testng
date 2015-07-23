@@ -1,14 +1,43 @@
 package organized.chaos;
 
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import static organized.chaos.PrintUtil.tPrint;
 
+import java.net.MalformedURLException;
 import java.util.Random;
 
 public class ThreadLocalDemo {
 	
 	private static final int SLEEP_MIN = 2;
 	private static final int SLEEP_MAX = 6;
+	
+	@BeforeMethod
+	@Parameters({"os", "browserName"})
+	public void beforeMethod(String os, String browserName) {
+
+        boolean runLocal = false;
+
+        WebDriver driver = null;
+        
+        if (runLocal) {
+        	tPrint("Creating webDriver instance...");
+        	driver = LocalDriverFactory.createInstance(browserName);
+        } else {
+        	tPrint("Creating RemoteWebDriver instance...");
+			try {
+				driver = RemoteDriverFactory.createInstance(os, browserName);
+			} catch (MalformedURLException e) {
+				tPrint("Issue creating remoteWebDriver: " + e.getMessage());
+				e.printStackTrace();
+			}
+        }
+		
+        LocalDriverManager.setWebDriver(driver);
+	}
 	
 	@Test
 	public void testMethod1() {
@@ -50,6 +79,16 @@ public class ThreadLocalDemo {
 	public void testMethod7() {
 		invokeBrowser("https://lifestore.aol.com");
 		tPrint("Title: " + getTitle());
+	}
+	
+	@AfterMethod
+	public void afterMethod() {
+		WebDriver driver = LocalDriverManager.getDriver();
+        if (driver != null) {
+        	tPrint("Killing webDriver instance...");
+            driver.quit();
+            tPrint("Webdriver instance is dead. HAHAHAHAHA!!!");
+        }
 	}
 
 	
